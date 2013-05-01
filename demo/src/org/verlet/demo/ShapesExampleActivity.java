@@ -1,11 +1,11 @@
-package com.verlet_demo;
+package org.verlet.demo;
 
 import android.app.Activity;
 import android.os.Bundle;
-import com.verlet_android.*;
+import org.verlet.*;
 
-public class ExampleActivity extends Activity {
-    VerletView verletView;
+public class ShapesExampleActivity extends Activity {
+    private VerletView verletView;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -15,7 +15,7 @@ public class ExampleActivity extends Activity {
         final Verlet verlet = verletView.getVerlet();
         verlet.friction = 1;
 
-        Composite segment = Objects.lineSegments(new com.verlet_android.Vec2[]{new Vec2(20, 10), new Vec2(40, 10),
+        Composite segment = Objects.lineSegments(new Vec2[]{new Vec2(20, 10), new Vec2(40, 10),
                 new Vec2(60, 10), new Vec2(80, 10), new Vec2(100, 10)}, 0.02);
         segment.pin(0);
         segment.pin(4);

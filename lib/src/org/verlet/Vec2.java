@@ -1,4 +1,4 @@
-package com.verlet_android;
+package org.verlet;
 
 /**
  * Simple two-dimensional vector implementation
@@ -79,45 +79,52 @@ public class Vec2 {
     }
 
     public double length() {
-        return Math.sqrt(x*x + y*y);
+        return Math.sqrt(x * x + y * y);
     }
 
     public double length2() {
-        return x*x + y*y;
+        return x * x + y * y;
     }
 
     public double dist(Vec2 vec) {
         return Math.sqrt(dist2(vec));
     }
 
-    public double dist2 (Vec2 vec) {
+    public double dist2(Vec2 vec) {
         double x = this.x - vec.x;
         double y = this.y - vec.y;
-        return x*x + y*y;
+        return x * x + y * y;
     }
 
-
     public Vec2 normal() {
-        double invLen = 1.0/length();
-        return new Vec2(invLen*x, invLen*y);
+        double invLen = 1.0 / length();
+        return new Vec2(invLen * x, invLen * y);
     }
 
     public double dot(Vec2 vec) {
-        return x*vec.x + y*vec.y;
+        return x * vec.x + y * vec.y;
     }
 
     public double angle(Vec2 vec) {
-        return Math.atan2(x*vec.y-y*vec.x, x*vec.x+y*vec.y);
+        return Math.atan2(x * vec.y - y * vec.x, x * vec.x + y * vec.y);
     }
 
     public double angle2(Vec2 left, Vec2 right) {
         return left.sub(this).angle(right.sub(this));
     }
 
-    public Vec2 rotate(Vec2 origin, double ang) {
-        double x = this.x-origin.x;
-        double y = this.y-origin.y;
-        return new Vec2(x*Math.cos(ang)-y*Math.sin(ang) + origin.x, x*Math.sin(ang)+y*Math.cos(ang) + origin.y);
+    public Vec2 rotate(Vec2 origin, double theta) {
+        double x = this.x - origin.x;
+        double y = this.y - origin.y;
+        return new Vec2(x*Math.cos(theta) - y*Math.sin(theta) + origin.x, x*Math.sin(theta) + y*Math.cos(theta) + origin.y);
+    }
+
+    public Vec2 mutableRotate(Vec2 origin, double ang) {
+        double x = this.x - origin.x;
+        double y = this.y - origin.y;
+        this.x = x * Math.cos(ang) - y * Math.sin(ang) + origin.x;
+        this.y = x * Math.sin(ang) + y * Math.cos(ang) + origin.y;
+        return this;
     }
 
     protected Vec2 clone() {

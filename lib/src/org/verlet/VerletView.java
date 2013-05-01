@@ -1,4 +1,4 @@
-package com.verlet_android;
+package org.verlet;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -6,8 +6,13 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 public class VerletView extends SurfaceView implements Runnable {
-    Thread t = null;
-    SurfaceHolder holder;
+    public interface OnFrameListener {
+        public void onFrame();
+    }
+
+    private OnFrameListener onFrameListener = null;
+    private Thread t = null;
+    private SurfaceHolder holder;
     boolean isItOk = false;
     protected Verlet verlet;
 
@@ -44,7 +49,9 @@ public class VerletView extends SurfaceView implements Runnable {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if (verlet != null && verlet.width!=0 && verlet.height!=0 ) {
+        if (verlet != null && verlet.width != 0 && verlet.height != 0) {
+            if (onFrameListener!=null) onFrameListener.onFrame();
+
             verlet.setCanvas(canvas);
             verlet.frame(16);
             verlet.draw();
@@ -71,5 +78,9 @@ public class VerletView extends SurfaceView implements Runnable {
 
     public Verlet getVerlet() {
         return verlet;
+    }
+
+    public void setOnFrameListener(OnFrameListener onFrameListener) {
+        this.onFrameListener = onFrameListener;
     }
 }
