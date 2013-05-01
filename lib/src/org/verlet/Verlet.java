@@ -19,7 +19,7 @@ public class Verlet implements View.OnTouchListener {
     public Vec2 gravity = new Vec2(0, 0.1);
     public double friction = 0.99;
     private double groundFriction = 0.8;
-    private List<Composite> composites = new LinkedList<Composite>();
+    private LinkedList<Composite> composites = new LinkedList<Composite>();
     private final double epsilon = 1E-5;
     Paint highlighPaint;
 

@@ -30,7 +30,7 @@ public class AngleConstraint implements Constraint {
     public void relax(double stepCoef) {
         double angle = this.b.pos.angle2(this.a.pos, this.c.pos);
         double diff = angle - this.angle;
-        if (diff < 1E-5) return;
+        if (diff < 1E-5) return; //for performance purposes
 
         if (diff <= -Math.PI)
             diff += 2*Math.PI;

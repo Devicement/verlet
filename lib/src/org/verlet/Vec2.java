@@ -127,8 +127,16 @@ public class Vec2 {
         return this;
     }
 
-    protected Vec2 clone() {
+    public Vec2 clone() {
         return new Vec2(x, y);
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
     }
 
     @Override

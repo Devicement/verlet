@@ -3,15 +3,14 @@ package org.verlet;
 import android.graphics.Canvas;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Composite {
     public interface DrawInterface {
         public void draw(Canvas canvas, Composite composite);
     }
 
-    public List<Particle> particles = new ArrayList<Particle>();
-    public List<Constraint> constraints = new ArrayList<Constraint>();
+    public ArrayList<Particle> particles = new ArrayList<Particle>();
+    public ArrayList<Constraint> constraints = new ArrayList<Constraint>();
     public DrawInterface drawParticles = null;
     public DrawInterface drawConstraints = null;
 

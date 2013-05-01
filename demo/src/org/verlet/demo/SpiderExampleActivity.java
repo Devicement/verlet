@@ -7,16 +7,13 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import org.verlet.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 class Spider extends Composite {
     public Particle thorax;
     public Particle head;
     public Particle abdomen;
-    public List<Particle> legs = new ArrayList<Particle>();
+    public ArrayList<Particle> legs = new ArrayList<Particle>();
 }
 
 public class SpiderExampleActivity extends Activity {
@@ -162,7 +159,7 @@ public class SpiderExampleActivity extends Activity {
         int flag1 = leg < 4 ? 1 : -1;
         int flag2 = leg%2 == 0 ? 1 : 0;
 
-        List<Particle> paths = new ArrayList<Particle>();
+        LinkedList<Particle> paths = new LinkedList<Particle>();
 
         for (Particle particle : spiderweb.particles) {
             if (particle.pos.sub(spider.particles.get(0).pos).dot(boundry1)*flag1 >= 0
@@ -199,7 +196,7 @@ public class SpiderExampleActivity extends Activity {
 
         if (paths.size() > 0) {
             Collections.shuffle(paths);
-            spider.constraints.add(new DistanceConstraint(spider.legs.get(leg), paths.get(0), 1, 0));
+            spider.constraints.add(new DistanceConstraint(spider.legs.get(leg), paths.getFirst(), 1, 0));
         }
     }
 
@@ -222,7 +219,7 @@ public class SpiderExampleActivity extends Activity {
 
     private void initScene(Verlet verlet) {
         final Composite spiderweb = spiderweb(new Vec2(verletView.getWidth()/ 2, verletView.getHeight()  / 2),
-                Math.min(verletView.getWidth() , verletView.getHeight() ) / 2, 20, 7);
+                Math.min(verletView.getWidth() , verletView.getHeight() ) / 2, 10, 5);
         final Spider spider = spider(new Vec2(verletView.getWidth()/2,-300));
         verlet.addComposite(spiderweb);
         verlet.addComposite(spider);
