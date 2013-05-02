@@ -69,7 +69,6 @@ public class Verlet implements View.OnTouchListener {
     }
 
     public void frame(int step) {
-
         for (Composite c : composites) {
             for (Particle p : c.particles) {
 
