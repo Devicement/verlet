@@ -1,17 +1,17 @@
 package org.verlet;
 
 /**
- * Simple two-dimensional vector implementation
+ * Simple two-dimensional vector implementation.
  */
 public class Vec2 {
     public double x, y;
 
+    public Vec2() {
+    }
+
     public Vec2(double x, double y) {
         this.x = x;
         this.y = y;
-    }
-
-    public Vec2() {
     }
 
     public Vec2 add(Vec2 vec) {

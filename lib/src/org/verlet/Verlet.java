@@ -117,7 +117,7 @@ public class Verlet implements View.OnTouchListener {
             c.draw(canvas);
         }
 
-        // highlight nearest / dragged entity
+        // Highlight nearest / dragged entity.
         if (draggedEntity != null) {
             canvas.drawCircle((float) draggedEntity.x, (float) draggedEntity.y, 8, highlighPaint);
         }

@@ -4,6 +4,9 @@ import android.graphics.Canvas;
 
 import java.util.ArrayList;
 
+/**
+ * Representation of single object on scene.
+ */
 public class Composite {
     public interface DrawInterface {
         public void draw(Canvas canvas, Composite composite);
