@@ -7,7 +7,10 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import org.verlet.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 class Spider extends Composite {
     public Particle thorax;
@@ -220,8 +223,8 @@ public class SpiderExampleActivity extends Activity {
 
     private void initScene(Verlet verlet) {
         final Composite spiderweb = spiderweb(new Vec2(verletView.getWidth() / 2, verletView.getHeight() / 2),
-                Math.min(verletView.getWidth(), verletView.getHeight()) / 2, 10, 5);
-        final Spider spider = spider(new Vec2(verletView.getWidth() / 2, -300));
+                Math.min(verletView.getWidth(), verletView.getHeight()) / 2, 20, 7);
+        final Spider spider = spider(new Vec2(verletView.getWidth() / 2, 300));
         verlet.addComposite(spiderweb);
         verlet.addComposite(spider);
 

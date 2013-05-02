@@ -34,6 +34,12 @@ public class Vec2 {
         return new Vec2(x * k, y * k);
     }
 
+    public Vec2 mutableSet(double x, double y) {
+        this.x = x;
+        this.y = y;
+        return this;
+    }
+
     public Vec2 mutableSet(Vec2 vec) {
         x = vec.x;
         y = vec.y;
@@ -116,7 +122,7 @@ public class Vec2 {
     public Vec2 rotate(Vec2 origin, double theta) {
         double x = this.x - origin.x;
         double y = this.y - origin.y;
-        return new Vec2(x*Math.cos(theta) - y*Math.sin(theta) + origin.x, x*Math.sin(theta) + y*Math.cos(theta) + origin.y);
+        return new Vec2(x * Math.cos(theta) - y * Math.sin(theta) + origin.x, x * Math.sin(theta) + y * Math.cos(theta) + origin.y);
     }
 
     public Vec2 mutableRotate(Vec2 origin, double ang) {

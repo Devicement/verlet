@@ -33,9 +33,9 @@ public class AngleConstraint implements Constraint {
         if (diff < 1E-5) return; //for performance purposes
 
         if (diff <= -Math.PI)
-            diff += 2*Math.PI;
+            diff += 2 * Math.PI;
         else if (diff >= Math.PI)
-            diff -= 2*Math.PI;
+            diff -= 2 * Math.PI;
 
         diff *= stepCoef * this.stiffness;
 

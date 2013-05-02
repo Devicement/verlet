@@ -53,7 +53,7 @@ public class VerletView extends SurfaceView implements Runnable {
             if (onFrameListener != null) onFrameListener.onFrame();
 
             verlet.setCanvas(canvas);
-            verlet.frame(16);
+            verlet.frame(6);
             verlet.draw();
         }
 

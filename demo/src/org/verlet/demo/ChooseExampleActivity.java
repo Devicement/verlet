@@ -11,7 +11,8 @@ import com.verlet_demo.R;
 public class ChooseExampleActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String[] values = new String[] {getString(R.string.shapes_example), getString(R.string.spiderweb_example)};
+
+        String[] values = new String[]{getString(R.string.shapes_example), getString(R.string.spiderweb_example)};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, values);
         setListAdapter(adapter);
     }

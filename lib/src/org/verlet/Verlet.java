@@ -69,6 +69,7 @@ public class Verlet implements View.OnTouchListener {
     }
 
     public void frame(int step) {
+
         for (Composite c : composites) {
             for (Particle p : c.particles) {
 
@@ -93,18 +94,19 @@ public class Verlet implements View.OnTouchListener {
             }
         }
 
-        if (draggedEntity != null) this.draggedEntity.mutableSet(this.mouse);
-
         // relax
         double stepCoef = 1.0 / step;
-        for (Composite c : this.composites) {
+        for (Composite c : composites) {
             for (int i = 0; i < step; ++i)
                 for (Constraint j : c.constraints)
                     j.relax(stepCoef);
         }
 
+        if (draggedEntity != null) this.draggedEntity.mutableSet(this.mouse);
+
+
         // bounds checking
-        for (Composite c : this.composites) {
+        for (Composite c : composites) {
             List<Particle> particles = c.particles;
             for (Particle p : particles) this.bounds(p);
         }

@@ -25,7 +25,7 @@ public class ShapesExampleActivity extends Activity {
         verlet.addComposite(box);
         Composite tire2 = Objects.tire(new Vec2(400, 50), 70, 7, 0.1, 0.2);
         verlet.addComposite(tire2);
-        Composite tire3 = Objects.tire(new Vec2(600, 50), 70, 3, 1, 1);
+        Composite tire3 = Objects.tire(new Vec2(600, 50), 70, 3, 1.0, 0.1);
         verlet.addComposite(tire3);
     }
 
