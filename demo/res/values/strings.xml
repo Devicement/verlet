@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Verlet-demo</string>
+    <string name="app_name">Verlet demo</string>
+    <string name="shapes_example">Simple shapes</string>
+    <string name="spiderweb_example">Spiderweb</string>
 </resources>
