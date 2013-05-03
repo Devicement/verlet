@@ -29,3 +29,7 @@ proguard/
 *.ipr
 *.iws
 .idea/
+
+proguard_logs/
+proguard-project.txt
+ant.properties

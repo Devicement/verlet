@@ -64,11 +64,9 @@ public class VerletView extends SurfaceView {
             @Override
             public void run() {
                 while (isItOk) {
-
                     if (!holder.getSurface().isValid()) {
                         continue;
                     }
-
                     Canvas c = holder.lockCanvas();
                     onDraw(c);
                     holder.unlockCanvasAndPost(c);
@@ -80,9 +78,21 @@ public class VerletView extends SurfaceView {
         processThread = new Thread(new Runnable() {
             @Override
             public void run() {
-
                 while (isItOk) {
                     process();
+
+                    long elapsedTime = System.currentTimeMillis() - lastProcessTime;
+                    lastProcessTime = System.currentTimeMillis();
+
+
+                    try {
+                        // sleep for 1 millisecond is made because if we have no sleep - all time in consumed
+                        // by process thread, leaving no time to draw thread (so we won't see anything on slow systems)
+                        Thread.sleep(elapsedTime < processPeriod ? processPeriod - elapsedTime: 2);
+                    } catch (InterruptedException e) {
+                        Log.e("Exception", e.toString());
+                    }
+
                 }
             }
         });
@@ -93,17 +103,6 @@ public class VerletView extends SurfaceView {
         if (verlet != null && verlet.width != 0 && verlet.height != 0) {
             if (onFrameListener != null) onFrameListener.onFrame();
             verlet.process(8);
-
-            long elapsedTime = System.currentTimeMillis() - lastProcessTime;
-            lastProcessTime = System.currentTimeMillis();
-
-            if (elapsedTime < processPeriod) {
-                try {
-                    Thread.sleep(processPeriod - elapsedTime);
-                } catch (InterruptedException e) {
-                    Log.e("Exception", e.toString());
-                }
-            }
         }
     }
 

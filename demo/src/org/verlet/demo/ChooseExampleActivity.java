@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import com.verlet_demo.R;
 
 public class ChooseExampleActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {

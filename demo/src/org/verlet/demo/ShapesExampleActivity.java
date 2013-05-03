@@ -21,7 +21,7 @@ public class ShapesExampleActivity extends Activity {
         segment.pin(4);
         verlet.addComposite(segment);
 
-        Composite box = Objects.box(new Vec2(300, 40), 70, 120, 0.3);
+        Composite box = Objects.box(new Vec2(100, 65), 70, 120, 0.3);
         verlet.addComposite(box);
         Composite tire2 = Objects.tire(new Vec2(400, 50), 70, 7, 0.1, 0.2);
         verlet.addComposite(tire2);

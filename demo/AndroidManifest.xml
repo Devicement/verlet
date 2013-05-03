@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.verlet_demo"
-          android:versionCode="1"
-          android:versionName="1.0">
-    <uses-sdk android:minSdkVersion="7"/>
+<manifest
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        package="org.verlet.demo"
+        android:versionCode="1"
+        android:versionName="1.0.0"
+        >
+    <uses-sdk
+            android:minSdkVersion="4"
+            android:targetSdkVersion="15"
+            />
 
     <application
             android:label="@string/app_name"
             android:icon="@drawable/icon"
+            android:debuggable="false"
             >
         <activity android:name="org.verlet.demo.ShapesExampleActivity"
                   android:label="@string/shapes_example" />
