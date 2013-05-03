@@ -27,6 +27,6 @@ public class PinConstraint implements Constraint {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawCircle((float) pos.x, (float) pos.y, 6, p);
+        canvas.drawCircle((float) a.pos.x, (float) a.pos.y, 6, p);
     }
 }

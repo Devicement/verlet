@@ -36,7 +36,7 @@ public class Verlet implements View.OnTouchListener {
     }
 
     public void addComposite(Composite composite) {
-        this.composites.add(composite);
+        composites.add(composite);
     }
 
     public void bounds(Particle particle) {
@@ -68,7 +68,7 @@ public class Verlet implements View.OnTouchListener {
         return true;
     }
 
-    public void frame(int step) {
+    public void process(int step) {
         for (Composite c : composites) {
             for (Particle p : c.particles) {
 
@@ -98,9 +98,12 @@ public class Verlet implements View.OnTouchListener {
         // relax
         double stepCoef = 1.0 / step;
         for (Composite c : composites) {
-            for (int i = 0; i < step; ++i)
-                for (Constraint j : c.constraints)
-                    j.relax(stepCoef);
+            for (int i = 0; i < step; ++i) {
+                for (Constraint j : c.constraints)  j.relax(stepCoef);
+
+                // one more cycle to make pins be at the same points as their particles
+                for (Constraint j : c.constraints) if(j instanceof PinConstraint) j.relax(stepCoef);
+            }
         }
 
         // bounds checking
@@ -118,7 +121,7 @@ public class Verlet implements View.OnTouchListener {
             c.draw(canvas);
         }
 
-        // Highlight nearest / dragged entity.
+        // Highlight dragged entity.
         if (draggedEntity != null) {
             canvas.drawCircle((float) draggedEntity.x, (float) draggedEntity.y, 8, highlighPaint);
         }

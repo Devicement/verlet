@@ -212,7 +212,8 @@ public class SpiderExampleActivity extends Activity {
         setContentView(verletView);
 
         final Verlet verlet = verletView.getVerlet();
-
+        verlet.gravity = new Vec2(0., 0.);
+        verlet.friction = 1.0;
         verletView.post(new Runnable() {
             @Override
             public void run() {
@@ -224,37 +225,40 @@ public class SpiderExampleActivity extends Activity {
     private void initScene(Verlet verlet) {
         final Composite spiderweb = spiderweb(new Vec2(verletView.getWidth() / 2, verletView.getHeight() / 2),
                 Math.min(verletView.getWidth(), verletView.getHeight()) / 2, 20, 7);
+//        final Composite spiderweb = Objects.tire(new Vec2(verletView.getWidth() / 2, verletView.getHeight() / 2),
+//                150, 10, 0.8, 0.8);
+        spiderweb.pin(spiderweb.particles.size()-1);
         final Spider spider = spider(new Vec2(verletView.getWidth() / 2, 300));
         verlet.addComposite(spiderweb);
         verlet.addComposite(spider);
+
+        final Paint spiderwebPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        spiderwebPaint.setAntiAlias(true);
+        spiderwebPaint.setColor(0xff2dad8f);
+        spiderwebPaint.setStyle(Paint.Style.FILL);
 
         spiderweb.drawParticles = new Composite.DrawInterface() {
             @Override
             public void draw(Canvas canvas, Composite composite) {
                 for (Particle p : composite.particles) {
-                    Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-                    paint.setAntiAlias(true);
-                    paint.setColor(0xff2dad8f);
-                    paint.setStyle(Paint.Style.FILL);
-                    canvas.drawCircle((float) p.pos.x, (float) p.pos.y, 1.3f, paint);
+                    canvas.drawCircle((float) p.pos.x, (float) p.pos.y, 1.3f, spiderwebPaint);
                 }
             }
         };
 
-
+        final Paint spederPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        spederPaint.setAntiAlias(true);
+        spederPaint.setColor(Color.BLACK);
         spider.drawConstraints = new Composite.DrawInterface() {
             @Override
             public void draw(Canvas canvas, Composite composite) {
-                Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-                paint.setAntiAlias(true);
-                paint.setColor(Color.BLACK);
-                paint.setStyle(Paint.Style.FILL);
+                spederPaint.setStyle(Paint.Style.FILL);
 
-                canvas.drawCircle((float) spider.head.pos.x, (float) spider.head.pos.y, 4, paint);
-                canvas.drawCircle((float) spider.thorax.pos.x, (float) spider.thorax.pos.y, 4, paint);
-                canvas.drawCircle((float) spider.abdomen.pos.x, (float) spider.abdomen.pos.y, 8, paint);
+                canvas.drawCircle((float) spider.head.pos.x, (float) spider.head.pos.y, 4, spederPaint);
+                canvas.drawCircle((float) spider.thorax.pos.x, (float) spider.thorax.pos.y, 4, spederPaint);
+                canvas.drawCircle((float) spider.abdomen.pos.x, (float) spider.abdomen.pos.y, 8, spederPaint);
 
-                paint.setStyle(Paint.Style.STROKE);
+                spederPaint.setStyle(Paint.Style.STROKE);
                 for (int i = 3; i < composite.constraints.size(); ++i) {
                     Constraint constraint = composite.constraints.get(i);
                     if (constraint instanceof DistanceConstraint) {
@@ -266,29 +270,29 @@ public class SpiderExampleActivity extends Activity {
                                         || (i >= (2 * 25) + 1 && i <= (2 * 25) + 2)
                                 ) {
 
-                            paint.setStrokeWidth(3);
+                            spederPaint.setStrokeWidth(3);
                         } else if (
                                 (i >= 4 && i <= 6)
                                         || (i >= (2 * 9) + 3 && i <= (2 * 9) + 4)
                                         || (i >= (2 * 17) + 3 && i <= (2 * 17) + 4)
                                         || (i >= (2 * 25) + 3 && i <= (2 * 25) + 4)
                                 ) {
-                            paint.setStrokeWidth(2);
+                            spederPaint.setStrokeWidth(2);
                         } else if (
                                 (i >= 6 && i <= 8)
                                         || (i >= (2 * 9) + 5 && i <= (2 * 9) + 6)
                                         || (i >= (2 * 17) + 5 && i <= (2 * 17) + 6)
                                         || (i >= (2 * 25) + 5 && i <= (2 * 25) + 6)
                                 ) {
-                            paint.setStrokeWidth(1.5f);
+                            spederPaint.setStrokeWidth(1.5f);
                         } else {
-                            paint.setStrokeWidth(1f);
+                            spederPaint.setStrokeWidth(1f);
                         }
 
                         DistanceConstraint distanceConstraint = (DistanceConstraint) constraint;
                         canvas.drawLine(
                                 (float) distanceConstraint.a.pos.x, (float) distanceConstraint.a.pos.y,
-                                (float) distanceConstraint.b.pos.x, (float) distanceConstraint.b.pos.y, paint);
+                                (float) distanceConstraint.b.pos.x, (float) distanceConstraint.b.pos.y, spederPaint);
                     }
                 }
             }

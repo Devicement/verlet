@@ -31,10 +31,16 @@ public class DistanceConstraint implements Constraint {
 
     @Override
     public void relax(double stepCoef) {
+//        Vec2 normal = a.pos.sub(b.pos);
+//        double m = normal.length2();
+//        if (m < 1E-5) return; //for performance purposes
+//        normal.mutableScale(((distance * distance - m) / m) * stiffness * stepCoef);
+//        a.pos.mutableAdd(normal);
+//        b.pos.mutableSub(normal);
         Vec2 normal = a.pos.sub(b.pos);
-        double m = normal.length2();
-        if (m < 1E-5) return; //for performance purposes
-        normal.mutableScale(((distance * distance - m) / m) * stiffness * stepCoef);
+        double m = normal.length();
+//        if (m < 1E-5) return; //for performance purposes
+        normal.mutableScale((distance / m - 1.0) * stiffness * stepCoef);
         a.pos.mutableAdd(normal);
         b.pos.mutableSub(normal);
     }

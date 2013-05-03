@@ -2,19 +2,23 @@ package org.verlet;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-public class VerletView extends SurfaceView implements Runnable {
+public class VerletView extends SurfaceView {
     public interface OnFrameListener {
         public void onFrame();
     }
 
     private OnFrameListener onFrameListener = null;
-    private Thread t = null;
+    private Thread drawThread = null;
+    private Thread processThread = null;
     private SurfaceHolder holder;
     boolean isItOk = false;
     protected Verlet verlet;
+    private final long processPeriod = 1000/50;
+    private long lastProcessTime = System.currentTimeMillis();
 
     public VerletView(Context context) {
         super(context);
@@ -34,46 +38,73 @@ public class VerletView extends SurfaceView implements Runnable {
     }
 
     @Override
-    public void run() {
-        while (isItOk) {
-
-            if (!holder.getSurface().isValid()) {
-                continue;
-            }
-
-            Canvas c = holder.lockCanvas();
-            onDraw(c);
-            holder.unlockCanvasAndPost(c);
-        }
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        if (verlet != null && verlet.width != 0 && verlet.height != 0) {
-            if (onFrameListener != null) onFrameListener.onFrame();
-
+    protected synchronized void onDraw(Canvas canvas) {
+        if (verlet != null) {
             verlet.setCanvas(canvas);
-            verlet.frame(6);
             verlet.draw();
         }
-
         super.onDraw(canvas);
     }
 
     public void pause() {
         isItOk = false;
         try {
-            t.join();
+            drawThread.join();
+            processThread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        t = null;
+        drawThread = null;
+        processThread = null;
     }
 
     public void resume() {
         isItOk = true;
-        t = new Thread(this);
-        t.start();
+        drawThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (isItOk) {
+
+                    if (!holder.getSurface().isValid()) {
+                        continue;
+                    }
+
+                    Canvas c = holder.lockCanvas();
+                    onDraw(c);
+                    holder.unlockCanvasAndPost(c);
+                }
+            }
+        });
+        drawThread.start();
+
+        processThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                while (isItOk) {
+                    process();
+                }
+            }
+        });
+        processThread.start();
+    }
+
+    private synchronized void process() {
+        if (verlet != null && verlet.width != 0 && verlet.height != 0) {
+            if (onFrameListener != null) onFrameListener.onFrame();
+            verlet.process(8);
+
+            long elapsedTime = System.currentTimeMillis() - lastProcessTime;
+            lastProcessTime = System.currentTimeMillis();
+
+            if (elapsedTime < processPeriod) {
+                try {
+                    Thread.sleep(processPeriod - elapsedTime);
+                } catch (InterruptedException e) {
+                    Log.e("Exception", e.toString());
+                }
+            }
+        }
     }
 
     public Verlet getVerlet() {
