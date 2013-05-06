@@ -4,16 +4,16 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 
 /**
- * Constrains to initial distance
+ * Constrains to initial distance, conforming Hooke's law
  */
-public class DistanceConstraint implements Constraint {
+public class HookeDistanceConstraint implements Constraint {
     public Particle a;
     public Particle b;
     private double stiffness;
     public double distance;
     private final Paint paint;
 
-    public DistanceConstraint(Particle a, Particle b, double stiffness, double distance) {
+    public HookeDistanceConstraint(Particle a, Particle b, double stiffness, double distance) {
         this.a = a;
         this.b = b;
         this.stiffness = stiffness;
@@ -25,16 +25,16 @@ public class DistanceConstraint implements Constraint {
         paint.setStyle(Paint.Style.STROKE);
     }
 
-    public DistanceConstraint(Particle a, Particle b, double stiffness) {
+    public HookeDistanceConstraint(Particle a, Particle b, double stiffness) {
         this(a, b, stiffness, a.pos.sub(b.pos).length());
     }
 
     @Override
     public void relax(double stepCoef) {
         Vec2 normal = a.pos.sub(b.pos);
-        double m = normal.length2();
+        double m = normal.length();
         if (m < 1E-5) return; //for performance purposes
-        normal.mutableScale(((distance * distance - m) / m) * stiffness * stepCoef);
+        normal.mutableScale((distance / m - 1.0) * stiffness * stepCoef);
         a.pos.mutableAdd(normal);
         b.pos.mutableSub(normal);
     }

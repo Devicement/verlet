@@ -66,9 +66,9 @@ public class Objects {
 
         // constraints
         for (int i = 0; i < segments; ++i) {
-            composite.constraints.add(new DistanceConstraint(composite.particles.get(i), composite.particles.get((i + 1) % segments), treadStiffness));
-            composite.constraints.add(new DistanceConstraint(composite.particles.get(i), center, spokeStiffness));
-            composite.constraints.add(new DistanceConstraint(composite.particles.get(i), composite.particles.get((i + 5) % segments), treadStiffness));
+            composite.constraints.add(new HookeDistanceConstraint(composite.particles.get(i), composite.particles.get((i + 1) % segments), treadStiffness));
+            composite.constraints.add(new HookeDistanceConstraint(composite.particles.get(i), center, spokeStiffness));
+            composite.constraints.add(new HookeDistanceConstraint(composite.particles.get(i), composite.particles.get((i + 5) % segments), treadStiffness));
         }
 
         return composite;

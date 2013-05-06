@@ -43,8 +43,8 @@ public class SpiderExampleActivity extends Activity {
         composite.particles.add(composite.head);
         composite.particles.add(composite.abdomen);
 
-        composite.constraints.add(new DistanceConstraint(composite.head, composite.thorax, bodyStiffness));
-        composite.constraints.add(new DistanceConstraint(composite.abdomen, composite.thorax, bodyStiffness));
+        composite.constraints.add(new HookeDistanceConstraint(composite.head, composite.thorax, bodyStiffness));
+        composite.constraints.add(new HookeDistanceConstraint(composite.abdomen, composite.thorax, bodyStiffness));
         composite.constraints.add(new AngleConstraint(composite.abdomen, composite.thorax, composite.head, 0.4));
 
         // legs
@@ -54,8 +54,8 @@ public class SpiderExampleActivity extends Activity {
 
             int len = composite.particles.size();
 
-            composite.constraints.add(new DistanceConstraint(composite.particles.get(len - 2), composite.thorax, legSeg1Stiffness));
-            composite.constraints.add(new DistanceConstraint(composite.particles.get(len - 1), composite.thorax, legSeg1Stiffness));
+            composite.constraints.add(new HookeDistanceConstraint(composite.particles.get(len - 2), composite.thorax, legSeg1Stiffness));
+            composite.constraints.add(new HookeDistanceConstraint(composite.particles.get(len - 1), composite.thorax, legSeg1Stiffness));
 
             double lenCoef = 1;
             if (i == 1 || i == 2) lenCoef = 0.7;
@@ -65,15 +65,15 @@ public class SpiderExampleActivity extends Activity {
             composite.particles.add(new Particle(composite.particles.get(len - 1).pos.add((new Vec2(-20, (i - 1.5) * 30)).normal().mutableScale(20 * lenCoef))));
 
             len = composite.particles.size();
-            composite.constraints.add(new DistanceConstraint(composite.particles.get(len - 4), composite.particles.get(len - 2), legSeg2Stiffness));
-            composite.constraints.add(new DistanceConstraint(composite.particles.get(len - 3), composite.particles.get(len - 1), legSeg2Stiffness));
+            composite.constraints.add(new HookeDistanceConstraint(composite.particles.get(len - 4), composite.particles.get(len - 2), legSeg2Stiffness));
+            composite.constraints.add(new HookeDistanceConstraint(composite.particles.get(len - 3), composite.particles.get(len - 1), legSeg2Stiffness));
 
             composite.particles.add(new Particle(composite.particles.get(len - 2).pos.add((new Vec2(20, (i - 1.5) * 50)).normal().mutableScale(20 * lenCoef))));
             composite.particles.add(new Particle(composite.particles.get(len - 1).pos.add((new Vec2(-20, (i - 1.5) * 50)).normal().mutableScale(20 * lenCoef))));
 
             len = composite.particles.size();
-            composite.constraints.add(new DistanceConstraint(composite.particles.get(len - 4), composite.particles.get(len - 2), legSeg3Stiffness));
-            composite.constraints.add(new DistanceConstraint(composite.particles.get(len - 3), composite.particles.get(len - 1), legSeg3Stiffness));
+            composite.constraints.add(new HookeDistanceConstraint(composite.particles.get(len - 4), composite.particles.get(len - 2), legSeg3Stiffness));
+            composite.constraints.add(new HookeDistanceConstraint(composite.particles.get(len - 3), composite.particles.get(len - 1), legSeg3Stiffness));
 
             Particle rightFoot = new Particle(composite.particles.get(len - 2).pos.add((new Vec2(20, (i - 1.5) * 100)).normal().mutableScale(12 * lenCoef)));
             Particle leftFoot = new Particle(composite.particles.get(len - 1).pos.add((new Vec2(-20, (i - 1.5) * 100)).normal().mutableScale(12 * lenCoef)));
@@ -84,8 +84,8 @@ public class SpiderExampleActivity extends Activity {
             composite.legs.add(leftFoot);
 
             len = composite.particles.size();
-            composite.constraints.add(new DistanceConstraint(composite.particles.get(len - 4), composite.particles.get(len - 2), legSeg4Stiffness));
-            composite.constraints.add(new DistanceConstraint(composite.particles.get(len - 3), composite.particles.get(len - 1), legSeg4Stiffness));
+            composite.constraints.add(new HookeDistanceConstraint(composite.particles.get(len - 4), composite.particles.get(len - 2), legSeg4Stiffness));
+            composite.constraints.add(new HookeDistanceConstraint(composite.particles.get(len - 3), composite.particles.get(len - 1), legSeg4Stiffness));
 
 
             composite.constraints.add(new AngleConstraint(composite.particles.get(len - 6), composite.particles.get(len - 4), composite.particles.get(len - 2), joint3Stiffness));
@@ -128,22 +128,22 @@ public class SpiderExampleActivity extends Activity {
         // constraints
         for (int i = 0; i < n - 1; ++i) {
             // neighbor
-            composite.constraints.add(new DistanceConstraint(composite.particles.get(i), composite.particles.get(i + 1), stiffness));
+            composite.constraints.add(new HookeDistanceConstraint(composite.particles.get(i), composite.particles.get(i + 1), stiffness));
 
             // span rings
             int off = i + segments;
             if (off < n - 1)
-                composite.constraints.add(new DistanceConstraint(composite.particles.get(i), composite.particles.get(off), stiffness));
+                composite.constraints.add(new HookeDistanceConstraint(composite.particles.get(i), composite.particles.get(off), stiffness));
             else
-                composite.constraints.add(new DistanceConstraint(composite.particles.get(i), composite.particles.get(n - 1), stiffness));
+                composite.constraints.add(new HookeDistanceConstraint(composite.particles.get(i), composite.particles.get(n - 1), stiffness));
         }
 
 
-        composite.constraints.add(new DistanceConstraint(composite.particles.get(0), composite.particles.get(segments - 1), stiffness));
+        composite.constraints.add(new HookeDistanceConstraint(composite.particles.get(0), composite.particles.get(segments - 1), stiffness));
 
         for (Constraint c : composite.constraints)
-            if (c instanceof DistanceConstraint) {
-                ((DistanceConstraint) c).distance *= tensor;
+            if (c instanceof HookeDistanceConstraint) {
+                ((HookeDistanceConstraint) c).distance *= tensor;
             }
 
         return composite;
@@ -175,9 +175,9 @@ public class SpiderExampleActivity extends Activity {
                 boolean leftFoot = false;
                 for (Constraint constraint : spider.constraints) {
                     for (int k = 0; k < 8; ++k) {
-                        if (constraint instanceof DistanceConstraint
-                                && ((DistanceConstraint) constraint).a == spider.legs.get(k)
-                                && ((DistanceConstraint) constraint).b == particle) {
+                        if (constraint instanceof HookeDistanceConstraint
+                                && ((HookeDistanceConstraint) constraint).a == spider.legs.get(k)
+                                && ((HookeDistanceConstraint) constraint).b == particle) {
                             leftFoot = true;
                         }
                     }
@@ -191,7 +191,7 @@ public class SpiderExampleActivity extends Activity {
 
         while (it.hasNext()) {
             Constraint constraint = (Constraint) it.next();
-            if (constraint instanceof DistanceConstraint && ((DistanceConstraint) constraint).a == spider.legs.get(leg)) {
+            if (constraint instanceof HookeDistanceConstraint && ((HookeDistanceConstraint) constraint).a == spider.legs.get(leg)) {
                 it.remove();
                 break;
             }
@@ -199,7 +199,7 @@ public class SpiderExampleActivity extends Activity {
 
         if (paths.size() > 0) {
             Collections.shuffle(paths);
-            spider.constraints.add(new DistanceConstraint(spider.legs.get(leg), paths.getFirst(), 1, 0));
+            spider.constraints.add(new HookeDistanceConstraint(spider.legs.get(leg), paths.getFirst(), 1, 0));
         }
     }
 
@@ -261,7 +261,7 @@ public class SpiderExampleActivity extends Activity {
                 spederPaint.setStyle(Paint.Style.STROKE);
                 for (int i = 3; i < composite.constraints.size(); ++i) {
                     Constraint constraint = composite.constraints.get(i);
-                    if (constraint instanceof DistanceConstraint) {
+                    if (constraint instanceof HookeDistanceConstraint) {
 //                        // draw legs
                         if (
                                 (i >= 2 && i <= 4)
@@ -289,10 +289,10 @@ public class SpiderExampleActivity extends Activity {
                             spederPaint.setStrokeWidth(1f);
                         }
 
-                        DistanceConstraint distanceConstraint = (DistanceConstraint) constraint;
+                        HookeDistanceConstraint constraint1 = (HookeDistanceConstraint) constraint;
                         canvas.drawLine(
-                                (float) distanceConstraint.a.pos.x, (float) distanceConstraint.a.pos.y,
-                                (float) distanceConstraint.b.pos.x, (float) distanceConstraint.b.pos.y, spederPaint);
+                                (float) constraint1.a.pos.x, (float) constraint1.a.pos.y,
+                                (float) constraint1.b.pos.x, (float) constraint1.b.pos.y, spederPaint);
                     }
                 }
             }

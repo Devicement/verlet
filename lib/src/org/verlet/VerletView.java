@@ -87,8 +87,8 @@ public class VerletView extends SurfaceView {
 
                     try {
                         // sleep for 1 millisecond is made because if we have no sleep - all time in consumed
-                        // by process thread, leaving no time to draw thread (so we won't see anything on slow systems)
-                        Thread.sleep(elapsedTime < processPeriod ? processPeriod - elapsedTime: 2);
+                        // by process thread, leaving no time for draw thread (so we won't see anything on slow systems)
+                        Thread.sleep(elapsedTime < processPeriod ? processPeriod - elapsedTime: 1);
                     } catch (InterruptedException e) {
                         Log.e("Exception", e.toString());
                     }
